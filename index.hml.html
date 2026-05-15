@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Doctor Appointment</title>
+
+<style>
+body {
+    font-family: Arial;
+    background: #f4f7fb;
+    margin: 0;
+}
+
+header {
+    background: #2b7cff;
+    color: white;
+    text-align: center;
+    padding: 15px;
+}
+
+.container {
+    max-width: 500px;
+    margin: 30px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+input, select {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background: #2b7cff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #1f5ed6;
+}
+
+.success {
+    color: green;
+    text-align: center;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>Doctor Appointment</h1>
+</header>
+
+<div class="container">
+    <h2>Book Appointment</h2>
+
+    <form id="form">
+        <input type="text" placeholder="Name" required>
+        <input type="email" placeholder="Email" required>
+        <input type="tel" placeholder="Phone" required>
+
+        <select>
+            <option>Select Doctor</option>
+            <option>General Physician</option>
+            <option>Dentist</option>
+            <option>Cardiologist</option>
+        </select>
+
+        <input type="date" required>
+        <input type="time" required>
+
+        <button type="submit">Book Appointment</button>
+    </form>
+
+    <p class="success" id="msg"></p>
+</div>
+
+<script>
+document.getElementById("form").addEventListener("submit", function(e){
+    e.preventDefault();
+
+    const data = {
+        name: document.querySelector("input[type='text']").value,
+        email: document.querySelector("input[type='email']").value,
+        phone: document.querySelector("input[type='tel']").value,
+        doctor: document.querySelector("select").value,
+        date: document.querySelector("input[type='date']").value,
+        time: document.querySelector("input[type='time']").value
+    };
+
+    fetch("http://127.0.0.1:5000/book", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    })
+    .then(res => res.json())
+    .then(() => {
+        document.getElementById("msg").innerText = "Appointment Booked Successfully!";
+    })
+    .catch(() => {
+        document.getElementById("msg").innerText = "Error connecting to server!";
+    });
+});
+</script>
+
+</body>
+</html>                                                 
